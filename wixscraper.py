@@ -779,7 +779,7 @@ async def fix_page(page, wait, hostname, blockPrimaryFolder, darkWebsite, forceD
 # Define the main function
 async def main():
     ...
-      browser = await launch({
+    browser = await launch({
         'headless': True,
         'args': [
             '--no-sandbox',
