@@ -797,8 +797,19 @@ async def main():
     hostname = urlparse(site).hostname
 
     # Use microsoft edge as the browser, set width and height to 1920x1080
-    browser = await launch(headless=False, defaultViewport= None, executablePath='C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe', args=['--window-size=1920,1080'])
-    
+   import sys
+
+if sys.platform.startswith('win'):
+    executable_path = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
+else:
+    executable_path = None  # Use default Chromium
+
+browser = await launch(
+    headless=False,
+    defaultViewport=None,
+    executablePath=executable_path,
+    args=['--window-size=1920,1080']
+)
     page = await browser.newPage()
     await page.goto(site)
     
