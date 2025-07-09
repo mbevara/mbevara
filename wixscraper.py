@@ -779,9 +779,7 @@ async def fix_page(page, wait, hostname, blockPrimaryFolder, darkWebsite, forceD
 # Define the main function
 async def main():
 
-    site = 'https://mbevara.wixsite.com/jmtiestheknot'  # define site before using it
 
-    print(site)  # now this works
 
     ...
     browser = await launch({
@@ -796,7 +794,9 @@ async def main():
         ],
     })
     page = await browser.newPage()
-    await page.goto('https://mbevara.wixsite.com/jmtiestheknot')
+    
+    site = 'https://mbevara.wixsite.com/jmtiestheknot'
+    await page.goto(site)
     
     print(site)
 
