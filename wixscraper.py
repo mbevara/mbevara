@@ -796,7 +796,7 @@ async def main():
     # Get the hostname
     hostname = urlparse(site).hostname
 
-    # Use microsoft edge as the browser, set width and height to 1920x1080
+# Use microsoft edge as the browser, set width and height to 1920x1080
 import sys
 
 if sys.platform.startswith('win'):
