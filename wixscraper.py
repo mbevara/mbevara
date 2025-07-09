@@ -810,7 +810,7 @@ browser = await launch(
     executablePath=executable_path,
     args=['--window-size=1920,1080']
 )
-    page = await browser.newPage()
+page = await browser.newPage()
     await page.goto(site)
     
     print(site)
