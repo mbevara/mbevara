@@ -1,8 +1,4 @@
-- name: Create config.json
-  run: |
-    echo '${{ secrets.CONFIG_JSON }}' > config.json
-    
-name: Run Wix Scraper
+    name: Run Wix Scraper
 
 on:
   push:
