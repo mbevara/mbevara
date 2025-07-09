@@ -797,7 +797,7 @@ async def main():
     hostname = urlparse(site).hostname
 
     # Use microsoft edge as the browser, set width and height to 1920x1080
-   import sys
+import sys
 
 if sys.platform.startswith('win'):
     executable_path = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
