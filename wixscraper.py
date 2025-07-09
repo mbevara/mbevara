@@ -780,8 +780,8 @@ async def fix_page(page, wait, hostname, blockPrimaryFolder, darkWebsite, forceD
 async def main():
     ...
     browser = await launch({
-        'headless': True,
-        'args': [
+    'headless': True,
+    'args': [
             '--no-sandbox',
             '--disable-setuid-sandbox',
             '--disable-gpu',
