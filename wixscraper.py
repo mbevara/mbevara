@@ -791,7 +791,7 @@ async def main():
         ],
     })
     page = await browser.newPage()
-    await page.goto(site)
+    await page.goto(https://mbevara.wixsite.com/jmtiestheknot)
     
     print(site)
 
