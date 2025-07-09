@@ -779,7 +779,14 @@ async def fix_page(page, wait, hostname, blockPrimaryFolder, darkWebsite, forceD
 # Define the main function
 async def main():
 
-
+   site = 'https://mbevara.wixsite.com/jmtiestheknot'
+    wait = 3
+    hostname = 'mbevara.wixsite.com'
+    blockPrimaryFolder = 'jmtiestheknot'
+    darkWebsite = False
+    forceDownloadAgain = False
+    metatags = {}
+    mapData = {}
 
     ...
     browser = await launch({
