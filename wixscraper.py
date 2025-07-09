@@ -779,12 +779,17 @@ async def fix_page(page, wait, hostname, blockPrimaryFolder, darkWebsite, forceD
 # Define the main function
 async def main():
     ...
-    browser = await launch(
-        headless=False,
-        defaultViewport=None,
-        args=['--window-size=1920,1080']
-    )
-    
+      browser = await launch({
+        'headless': True,
+        'args': [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-gpu',
+            '--disable-dev-shm-usage',
+            '--no-zygote',
+            '--single-process',
+        ],
+    })
     page = await browser.newPage()
     await page.goto(site)
     
