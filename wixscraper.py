@@ -782,7 +782,6 @@ async def main():
     browser = await launch(
         headless=False,
         defaultViewport=None,
-        executablePath=executable_path,
         args=['--window-size=1920,1080']
     )
     
