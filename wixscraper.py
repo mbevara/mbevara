@@ -778,39 +778,14 @@ async def fix_page(page, wait, hostname, blockPrimaryFolder, darkWebsite, forceD
 
 # Define the main function
 async def main():
-    
-    """ Variable Declarations """
-    # Load the data in from the json file
-    with open('config.json') as f:
-        data = json.load(f)
-
-    site = data['site']
-    blockPrimaryFolder = data['blockPrimaryFolder']
-    wait = data['wait']
-    recursive = data['recursive'].lower() == 'true'
-    darkWebsite = data['darkWebsite'].lower() == 'true'
-    forceDownloadAgain = data['forceDownloadAgain'].lower() == 'true'
-    metatags = data['metatags']
-    mapData = data['mapData']
-
-    # Get the hostname
-    hostname = urlparse(site).hostname
-
-# Use microsoft edge as the browser, set width and height to 1920x1080
-import sys
-
-if sys.platform.startswith('win'):
-    executable_path = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
-else:
-    executable_path = None  # Use default Chromium
-
-browser = await launch(
-    headless=False,
-    defaultViewport=None,
-    executablePath=executable_path,
-    args=['--window-size=1920,1080']
-)
-page = await browser.newPage()
+    ...
+    browser = await launch(
+        headless=False,
+        defaultViewport=None,
+        executablePath=executable_path,
+        args=['--window-size=1920,1080']
+    )
+    page = await browser.newPage()
     await page.goto(site)
     
     print(site)
