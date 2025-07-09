@@ -23,12 +23,24 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
-    - name: Install Chromium dependencies
+    - name: Install system dependencies
       run: |
-          sudo apt-get update
-          sudo apt-get install -y chromium-browser
-          sudo apt-get install -y libnss3 libgconf-2-4 libxss1 libasound2 libxtst6 libgtk-3-0
-          sudo ln -s /usr/bin/chromium-browser /usr/bin/chromium || true
+        sudo apt update
+        sudo apt install -y \
+        libasound2t64 \
+        libatk-bridge2.0-0 \
+        libatk1.0-0 \
+        libcups2 \
+        libxcomposite1 \
+        libxdamage1 \
+        libxrandr2 \
+        libgbm1 \
+        libnss3 \
+        libxss1 \
+        libxshmfence1 \
+        fonts-liberation \
+        libappindicator3-1 \
+        xdg-utils
 
 
     - name: Run wixscraper
