@@ -786,7 +786,7 @@ async def main():
         args=['--window-size=1920,1080']
     )
 page = await browser.newPage()
-    await page.goto(site)
+await page.goto(site)
     
     print(site)
 
