@@ -17,7 +17,10 @@ jobs:
       with:
         python-version: '3.11'
   
-  
+    - name: Download Chromium for Pyppeteer
+      run: |
+       python -c "from pyppeteer import chromium_downloader; chromium_downloader.download_chromium()"  
+   
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
