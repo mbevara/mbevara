@@ -786,10 +786,10 @@ async def main():
         args=['--window-size=1920,1080']
     )
     
-page = await browser.newPage()
-await page.goto(site)
+    page = await browser.newPage()
+    await page.goto(site)
     
-print(site)
+    print(site)
 
     # Fix the first page
     html = await fix_page(page, wait, hostname, blockPrimaryFolder, darkWebsite, forceDownloadAgain,metatags, mapData)
