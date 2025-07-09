@@ -23,3 +23,7 @@ jobs:
 
     - name: Run wixscraper.py
       run: python wixscraper.py
+
+git add .github/workflows/run-scraper.yml
+git commit -m "Add GitHub Actions workflow to run wixscraper.py"
+git push origin main
