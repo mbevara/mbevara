@@ -778,20 +778,39 @@ async def fix_page(page, wait, hostname, blockPrimaryFolder, darkWebsite, forceD
 
 # Define the main function
 async def main():
+    site = 'https://mbevara.wixsite.com/jmtiestheknot'
+    wait = 3
+    hostname = 'mbevara.wixsite.com'
+    blockPrimaryFolder = 'jmtiestheknot'
+    darkWebsite = False
+    forceDownloadAgain = False
+    recursive = False  # Set to True to enable crawling all pages
 
-   site = 'https://mbevara.wixsite.com/jmtiestheknot'
-   wait = 3
-   hostname = 'mbevara.wixsite.com'
-   blockPrimaryFolder = 'jmtiestheknot'
-   darkWebsite = False
-   forceDownloadAgain = False
-   metatags = {}
-   mapData = {}
+    metatags = {
+        "/": {
+            "title": "J&M Tie the Knot",
+            "description": "A celebration of love and new beginnings.",
+            "keywords": "wedding, J&M, love, celebration",
+            "canonical": site,
+            "image": "/images/cover.jpg",
+            "author": "Mounica Bevara"
+        }
+    }
 
-    ...
+    mapData = {
+        "latitude": "40.7128",
+        "longitude": "-74.0060",
+        "zoom": "12",
+        "mapMarker": {
+            "latitude": "40.7128",
+            "longitude": "-74.0060",
+            "popup": "Our Venue Location"
+        }
+    }
+
     browser = await launch({
-    'headless': True,
-    'args': [
+        'headless': True,
+        'args': [
             '--no-sandbox',
             '--disable-setuid-sandbox',
             '--disable-gpu',
@@ -800,85 +819,62 @@ async def main():
             '--single-process',
         ],
     })
+
     page = await browser.newPage()
-    
-    site = 'https://mbevara.wixsite.com/jmtiestheknot'
     await page.goto(site)
-    
     print(site)
 
-    # Fix the first page
-    html = await fix_page(page, wait, hostname, blockPrimaryFolder, darkWebsite, forceDownloadAgain,metatags, mapData)
+    html = await fix_page(page, wait, hostname, blockPrimaryFolder, darkWebsite, forceDownloadAgain, metatags, mapData)
 
     if not os.path.exists(hostname):
         os.mkdir(hostname)
 
-    with open(hostname + '/index.html', 'w', encoding="utf-8") as f:
+    with open(f'{hostname}/index.html', 'w', encoding='utf-8') as f:
         f.write(html)
 
-    if(recursive): 
+    if recursive:
         seen = []
-        # Recursively go through all the local links and save them to the directory
+
         async def save_links(page, links):
-            # Delete all links that are not local
-            links = [link for link in links if hostname in link]
-            # Delete all links with hash
-            links = [link for link in links if '#' not in link]
+            links = [link for link in links if hostname in link and '#' not in link]
             links = set(links)
-            #print(links)
             errors = {}
+
             for link in links:
-                print(link)
                 if link in seen:
                     continue
 
                 try:
-
                     await page.goto(link)
-                    
                     seen.append(link)
 
-                    html = await fix_page(page, wait, hostname, blockPrimaryFolder, darkWebsite, forceDownloadAgain,metatags, mapData)
-
-                    # Write each page as index.html to a folder named after the page
-                    # Check if the hostname is nested inside another folder
-                    # Count number of slashes
+                    html = await fix_page(page, wait, hostname, blockPrimaryFolder, darkWebsite, forceDownloadAgain, metatags, mapData)
                     newlink = link.replace('https://', '').replace('http://', '')
 
-                    if(newlink.count('/') > 1 and blockPrimaryFolder not in newlink.split('/')[1]):
-                        # Create the folder
-                        if not os.path.exists(hostname + '/' + '/'.join(newlink.split('/')[1:])):
-                            os.makedirs(hostname + '/' + '/'.join(newlink.split('/')[1:]))
-                        with open(hostname + '/' + '/'.join(newlink.split('/')[1:]) + '/index.html', 'w', encoding="utf-8") as f:
-                            f.write(html)
-                    else:
-                        if not os.path.exists(hostname + '/' + link.split('/')[-1]):
-                            os.makedirs(hostname + '/' + link.split('/')[-1])
-                        with open(hostname + '/' + link.split('/')[-1] + '/index.html', 'w', encoding="utf-8") as f:
-                            f.write(html)
-                
+                    path_parts = newlink.split('/')[1:]
+                    path = '/'.join(path_parts)
+                    folder = f"{hostname}/{path}"
+
+                    if not os.path.exists(folder):
+                        os.makedirs(folder)
+
+                    with open(f'{folder}/index.html', 'w', encoding='utf-8') as f:
+                        f.write(html)
+
                     await save_links(page, await page.querySelectorAllEval('a', 'nodes => nodes.map(n => n.href)'))
 
                 except Exception as e:
-                    
-                    # Check the error count, if over 3, add link to the seen list (ignore)
-                    if(link in errors):
-                        errors[link] += 1
-                    else:
-                        errors[link] = 1
-
-                    if(errors[link] > 3):
+                    errors[link] = errors.get(link, 0) + 1
+                    if errors[link] > 3:
                         seen.append(link)
-                        print("Error: " + link + ". Giving up after 3 attempts. Added to seen list.")
                         continue
 
+                    print(f"Error: {link}. Try {errors[link]} of 3")
                     print(e)
-                    print("Error: " + link + ". Try " + str(errors[link]) + " of 3")
-
-                    continue
 
         await save_links(page, await page.querySelectorAllEval('a', 'nodes => nodes.map(n => n.href)'))
-        
-    #await browser.close()
+
+    await browser.close()
 
 asyncio.get_event_loop().run_until_complete(main())
+
