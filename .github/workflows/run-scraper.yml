@@ -2,7 +2,7 @@ name: Run Wix Scraper
 
 on:
   push:
-    branches: [ main ]  # Or replace with your branch name
+    branches: [ main ]
 
 jobs:
   run-script:
@@ -19,8 +19,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install -r requirements.txt
 
-    - name: Run wixscraper.py
+    - name: Run wixscraper
       run: python wixscraper.py
-
